@@ -11,11 +11,23 @@
 <body>
     <main class="todo-container">
         <h1>To-Do List</h1>
+
+        <!--added an aria-live region to provide feedback to screen readers-->
+        <div role="status" aria-live="polite" id="live-polite" class="vissually-hidden">
+            <!-- anything added in this div will be spoken out when the screen reader is not currently speaking something (aria-live="polite")-->        
+        </div>
+
         <div class="input-container">
-            <input type="text" id="todo-input" class="todo-input" placeholder="Add a new task" aria-label="Task input">
+            <!--changed the label here to reflect what the input is for-->
+            <input type="text" id="todo-input" class="todo-input" placeholder="Add a new task" aria-label="New task" aria-invalid="true">
             <button id="add-task-btn" aria-describedby="todo-input">Add Task</button>
         </div>
+
         <ul id="todo-list" class="todo-list" role="list"></ul>
+
+        <!-- added a message for when the todo list is empty, we use CSS to hide either the list or the message
+        depending on state (can be done with JS if you prefer)-->
+        <p id="empty-msg">You have no tasks in your task list, add some.</p>
     </main>
 
     <script src="app.js"></script>
