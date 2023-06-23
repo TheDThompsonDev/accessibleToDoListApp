@@ -13,7 +13,7 @@ function addTask() {
     todoList.appendChild(taskItem);
 
     // we share the event with screen reader users in the live region.
-    const announcementText = taskText + " added";
+    const announcementText = `${taskText} added. ${getTodoListStatus()}`;
     announce(announcementText);
 
 
@@ -91,7 +91,7 @@ function deleteTask(event) {
   todoList.removeChild(taskItem);
 
   //update visually hidden section
-  const announcementText = taskText + " deleted";
+  const announcementText = `${taskText} deleted. ${getTodoListStatus()}`;
   announce(announcementText);
 
   //we should manage focus as the selected item no longer exists.
@@ -103,6 +103,11 @@ function deleteTask(event) {
 function toggleTask(event) {
   const taskItem = event.target.parentNode;
   taskItem.classList.toggle('completed');
+
+  const taskText = taskItem.querySelector('.task-text').textContent;
+
+  const announcementText = `${taskText} marked as complete. ${getTodoListStatus()}`;
+  announce(announcementText);
 }
 
 // Event listeners
@@ -139,5 +144,15 @@ function checkInputIsValid(){
 
 todoInput.addEventListener('keyup', function(){
   checkInputIsValid()
-});
+})
 
+function getTodoListStatus(){
+  let items = [...todoList.querySelectorAll("li")]
+  let totalItemCount = items.length
+  let completedItemCount = items.map(item => item.querySelector("input[type='checkbox']"))
+                                .filter(checkbox => checkbox.checked).length
+  console.log(completedItemCount);
+  let incompleteItemCount = totalItemCount - completedItemCount
+  
+  return `${totalItemCount}  items are currently in your todo list. ${completedItemCount} completed items, ${incompleteItemCount} incomplete.`
+}
